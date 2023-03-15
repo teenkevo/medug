@@ -1,0 +1,17 @@
+scalar Upload
+
+type File @auth(rules: [{ isAuthenticated: true }]) {
+  fileId: ID! @id
+  url: String!
+  name: String!
+  type: String!
+  gcName: String
+}
+
+type Mutation @auth(rules: [{ isAuthenticated: true }]) {
+  # single uploads
+  UploadFile(file: Upload!): File!
+  # multiple uploads
+  UploadFiles(files: [Upload!]): [File!]!
+  RemoveFile(gcName: String): File
+}

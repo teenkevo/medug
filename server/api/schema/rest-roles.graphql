@@ -1,0 +1,15 @@
+type Role {
+  id: String
+  name: String
+  description: String
+}
+
+type Query {
+  getAllRoles: [Role]!
+  getUserRoles(userId: String!): [Role]!
+}
+
+type Mutation {
+  assignRolesToUser(roleIds: [String!]!, userId: String!): String
+  removeRolesFromUser(roleIds: [String!]!, userId: String!): String
+}

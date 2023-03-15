@@ -1,0 +1,228 @@
+type Card {
+  mandate_options: String
+  network: String
+  request_three_d_secure: String
+}
+
+# \secret
+type SetupIntent {
+  client_secret: String
+}
+
+# \updateCustomerReturn
+type Customer {
+  id: String
+  invoice_settings: InvoiceSettings
+}
+
+# \createSubscription
+input CreateSubscriptionInput {
+  customer: String
+  price: String
+  collection_method: String
+  metadata: SubscriptionInputMetadataInput
+}
+
+input SubscriptionInputMetadataInput {
+  title: String
+}
+
+type SubscriptionData {
+  id: String
+  cancel_at_period_end: Boolean
+  current_period_end: Float
+  customer: String
+  items: SubscriptionItems
+  latest_invoice: String
+  status: String
+  metadata: SubscriptionMetadata
+}
+
+# \updateSubscription
+input UpdateSubscriptionInput {
+  subscription: String!
+  object: UpdateSubscriptionObjectInput
+}
+
+input UpdateSubscriptionObjectInput {
+  cancel_at_period_end: Boolean
+  items: [ItemInput]
+  metadata: SubscriptionInputMetadataInput
+}
+
+input ItemInput {
+  id: String
+  price: String
+}
+
+# updateProduct
+input UpdateProductInput {
+  product: String
+  object: UpdateProductObjectInput
+}
+
+input UpdateProductObjectInput {
+  active: Boolean
+}
+
+type Product {
+  id: String
+  active: Boolean
+  default_price: String
+}
+
+# \createProduct
+input CreateProductInput {
+  name: String
+  default_price_data: DefaultPriceDataInput
+}
+
+input DefaultPriceDataInput {
+  currency: String
+  unit_amount_decimal: String
+  recurring: RecurringInput
+}
+
+input RecurringInput {
+  interval: String
+  interval_count: Int
+}
+
+# \createPrice
+input CreatePriceInput {
+  priceData: PriceDataInput
+}
+
+input PriceDataInput {
+  product: String
+  active: Boolean
+  currency: String
+  unit_amount_decimal: String
+  recurring: RecurringInput
+}
+
+type RestPrice {
+  id: String
+  active: Boolean
+  unit_amount_decimal: String
+  currency: String
+  type: String
+  recurring: Recurring
+}
+
+type Recurring {
+  interval: String
+  interval_count: Int
+}
+
+# \getInvoices
+type RestInvoice {
+  data: [InvoiceData]
+}
+
+type InvoiceData {
+  id: String
+  status: String
+  invoice_pdf: String
+  hosted_invoice_url: String
+  number: String
+  amount_due: Int
+  due_date: Float
+  lines: Line
+}
+
+type Line {
+  data: [LineData]
+}
+
+type LineData {
+  period: Period
+}
+
+type Period {
+  end: Float
+  start: Float
+}
+
+# \getCustomer
+type InvoiceSettings {
+  custom_fields: String
+  default_payment_method: String
+  footer: String
+  rendering_options: String
+}
+
+# \getSubscriptions
+input GetSubscriptionsInput {
+  filter: FilterInput
+}
+
+input FilterInput {
+  customer: String
+}
+
+type SubscriptionMetadata {
+  policy_id: String
+  title: String
+}
+
+type SubscriptionItems {
+  data: [SubscriptionItemData]
+  has_more: Boolean
+  object: String
+  url: String
+}
+
+type SubscriptionItemData {
+  id: String
+  plan: Plan
+}
+
+type Plan {
+  active: Boolean
+  amount: Int
+  currency: String
+  interval: String
+  interval_count: Int
+}
+
+type GetSubscriptionsResponse {
+  data: [SubscriptionData]
+}
+
+# \getCharges
+type Charge {
+  data: [ChargeData]
+}
+
+type ChargeData {
+  invoice: String
+  receipt_url: String
+}
+
+# detachPaymentMethod
+type RestPaymentMethod {
+  id: String
+}
+
+type Mutation {
+  setupIntent(customerId: String!): SetupIntent
+  updateCustomer(customerId: String!, paymentMethod: String): Customer
+  createSubscription(input: CreateSubscriptionInput!): SubscriptionData
+  finalizeInvoice(invoiceId: String!): RestInvoice
+  updateSubscription(input: UpdateSubscriptionInput!): SubscriptionData
+  cancelSubscription(subscriptionId: String!): SubscriptionData
+  updateProduct(input: UpdateProductInput!): Product
+  createProduct(input: CreateProductInput!): Product
+  createRestPrice(input: CreatePriceInput!): RestPrice
+  deleteCustomer(customerId: String): Customer
+  createCustomer(name: String, email: String, type: String): Customer
+  detachPaymentMethod(paymentMethod: String): RestPaymentMethod
+}
+
+type Query {
+  getRestInvoices(customerId: String): RestInvoice
+  getCustomer(customerId: String): Customer
+  getSubscriptions(input: GetSubscriptionsInput): GetSubscriptionsResponse
+  getCharges(customerId: String): Charge
+}
