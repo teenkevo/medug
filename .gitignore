@@ -1,6 +1,5 @@
 .vscode
 **/.env
-.history
 # neo4j data mount on host
 neo4j/data
 # certbot folder with SSL stuff
