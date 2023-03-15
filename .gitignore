@@ -9,3 +9,4 @@ bolt
 https
 cluster
 node_modules
+.DS_Store
