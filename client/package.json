@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^13.5.0",
     "apollo-upload-client": "^17.0.0",
     "date-fns": "^2.29.3",
+    "gzipper": "^7.2.0",
     "http-proxy-middleware": "^2.0.6",
     "i18next": "^22.4.11",
     "i18next-browser-languagedetector": "^7.0.1",
