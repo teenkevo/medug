@@ -7,6 +7,7 @@
     "@auth0/auth0-react": "^2.0.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@mui/lab": "^5.0.0-alpha.123",
     "@mui/material": "^5.11.13",
     "@reactour/tour": "^3.3.0",
     "@sentry/react": "^7.43.0",
