@@ -1,0 +1,234 @@
+type MedicalFacility {
+  id: ID! @id
+  address: Address @relationship(type: "HAS_ADDRESS", direction: OUT)
+  medicalServices: [MedicalService!]!
+    @relationship(type: "HAS_MEDICAL_SERVICE", direction: OUT)
+  patients: [Patient!]! @relationship(type: "HAS_PATIENT", direction: OUT)
+  admissions: [Admission!]! @relationship(type: "HAS_ADMISSION", direction: OUT)
+  insuracePayments: [InsurancePayment!]!
+    @relationship(type: "HAS_INSURANCE_PAYMENTS", direction: OUT)
+  cashPayments: [CashPayment!]!
+    @relationship(type: "HAS_CASH_PAYMENT", direction: OUT)
+  digitalPayments: [DigitalPayment!]!
+    @relationship(type: "HAS_DIGITAL_PAYMENT", direction: OUT)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "HAS_HEALTH_WORKER", direction: OUT)
+  specialties: [Specialty!]!
+    @relationship(type: "HAS_SPECIALTY", direction: OUT)
+  equipment: [Equipment!]! @relationship(type: "HAS_EQUIPMENT", direction: OUT)
+  operatingRooms: [OperatingRoom!]!
+    @relationship(type: "HAS_OPERATING_ROOM", direction: OUT)
+  wards: [Ward!]! @relationship(type: "HAS_WARD", direction: OUT)
+  icus: [ICU!]! @relationship(type: "HAS_ICU", direction: OUT)
+  deliveryRooms: [DeliveryRoom!]!
+    @relationship(type: "HAS_DELIVERY_ROOM", direction: OUT)
+  inventoryRooms: [InventoryRoom!]!
+    @relationship(type: "HAS_INVENTORY_ROOM", direction: OUT)
+  laboratories: [Laboratory!]!
+    @relationship(type: "HAS_LABORATORY", direction: OUT)
+}
+
+type Address {
+  id: ID! @id
+  addressLine1: String
+  addressLine2: String
+  city: String
+  country: String
+  postalCode: String
+  state: String
+  nearestMedicalFacilities: [MedicalFacility!]!
+    @relationship(type: "HAS_NEAREST_MEDICAL_FACILITY", direction: IN)
+}
+
+type MedicalService {
+  id: ID! @id
+  medicalFacilities: [MedicalFacility!]!
+    @relationship(type: "HAS_MEDICAL_SERVICE", direction: IN)
+  procedure: [Procedure!]! @relationship(type: "HAS_PROCEDURE", direction: OUT)
+}
+
+type Procedure {
+  id: ID! @id
+  sop: SOP @relationship(type: "HAS_SOP", direction: OUT)
+}
+
+type Patient {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_PATIENT", direction: IN)
+  medicalRecord: MedicalRecord
+    @relationship(type: "HAS_MEDICAL_RECORD", direction: OUT)
+  insurancePayments: [InsurancePayment!]!
+    @relationship(type: "MAKES_INSURANCE_PAYMENT", direction: OUT)
+  cashPayments: [CashPayment!]!
+    @relationship(type: "MAKES_CASH_PAYMENT", direction: OUT)
+  digitalPayments: [DigitalPayment!]!
+    @relationship(type: "MAKES_DIGITAL_PAYMENT", direction: OUT)
+}
+
+type MedicalRecord {
+  id: ID! @id
+  patient: Patient @relationship(type: "HAS_MEDICAL_RECORD", direction: IN)
+  diagnoses: [Diagnosis!]! @relationship(type: "HAS_DIAGNOSIS", direction: OUT)
+  consultations: [Consultation!]!
+    @relationship(type: "HAS_CONSULTATION", direction: OUT)
+}
+
+type Prescription {
+  id: ID! @id
+  medicalrecordHasPrescription: MedicalRecord
+    @relationship(type: "HAS_PRESCRIPTION", direction: IN)
+  healthworkerIssuesPrescription: HealthWorker
+    @relationship(type: "ISSUES_PRESCRIPTION", direction: IN)
+}
+
+type Diagnosis {
+  id: ID! @id
+  healthWorker: HealthWorker
+    @relationship(type: "ISSUES_DIAGNOSIS", direction: IN)
+  prescriptions: [Prescription!]!
+    @relationship(type: "HAS_PRESCRIPTION", direction: OUT)
+  admission: Admission
+    @relationship(type: "IS_ADMISSION_FOR_DIAGNOSIS", direction: IN)
+  medicalRecord: MedicalRecord
+    @relationship(type: "HAS_DIAGNOSIS", direction: IN)
+}
+
+type Consultation {
+  id: ID! @id
+  medicalRecord: MedicalRecord
+    @relationship(type: "HAS_CONSULTATION", direction: IN)
+  healthWorker: HealthWorker
+    @relationship(type: "ISSUES_CONSULTATION", direction: IN)
+}
+
+type Admission {
+  id: ID! @id
+  diagnosis: Diagnosis
+    @relationship(type: "IS_ADMISSION_FOR_DIAGNOSIS", direction: OUT)
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_ADMISSION", direction: IN)
+}
+
+type InsurancePayment {
+  id: ID! @id
+  patient: Patient @relationship(type: "MAKES_INSURANCE_PAYMENT", direction: IN)
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_INSURANCE_PAYMENTS", direction: IN)
+}
+
+type CashPayment {
+  id: ID! @id
+  patient: Patient @relationship(type: "MAKES_CASH_PAYMENT", direction: IN)
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_CASH_PAYMENT", direction: IN)
+}
+
+type DigitalPayment {
+  id: ID! @id
+  patient: Patient @relationship(type: "MAKES_DIGITAL_PAYMENT", direction: IN)
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_DIGITAL_PAYMENT", direction: IN)
+}
+
+type HealthWorker {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_HEALTH_WORKER", direction: IN)
+  healthWorkerRecord: HealthWorkerRecord
+    @relationship(type: "HAS_HEALTH_WORKER_RECORD", direction: OUT)
+  specialties: [Specialty!]!
+    @relationship(type: "BELONGS_TO_SPECIALTY", direction: OUT)
+  staffOfLaboratories: [Laboratory!]!
+    @relationship(type: "STAFF_OF_LABORATORY", direction: OUT)
+  staffOfOperatingRooms: [OperatingRoom!]!
+    @relationship(type: "STAFF_OF_OPERATING ROOM", direction: OUT)
+  staffOfWard: [Ward!]! @relationship(type: "STAFF_OF_WARD", direction: OUT)
+  staffOfICU: [ICU!]! @relationship(type: "STAFF_OF_ICU", direction: OUT)
+  staffOfDeliveryRoom: [DeliveryRoom!]!
+    @relationship(type: "STAFF_OF_DELIVERY_ROOM", direction: OUT)
+  staffOfInventoryRoom: [InventoryRoom!]!
+    @relationship(type: "STAFF_OF_INVENTORY_ROOM", direction: OUT)
+  consultations: [Consultation!]!
+    @relationship(type: "ISSUES_CONSULTATION", direction: OUT)
+  diagnoses: [Diagnosis!]!
+    @relationship(type: "ISSUES_DIAGNOSIS", direction: OUT)
+  operatedEquipment: [Equipment!]!
+    @relationship(type: "OPERATED_BY", direction: IN)
+}
+
+type HealthWorkerRecord {
+  id: ID! @id
+  healthWorker: HealthWorker
+    @relationship(type: "HAS_HEALTH_WORKER_RECORD", direction: IN)
+}
+
+type Specialty {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_SPECIALTY", direction: IN)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "BELONGS_TO_SPECIALTY", direction: IN)
+}
+
+type Equipment {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_EQUIPMENT", direction: IN)
+  operatingHealthWorker: [HealthWorker!]!
+    @relationship(type: "OPERATED_BY", direction: OUT)
+  sop: SOP @relationship(type: "HAS_SOP", direction: OUT)
+}
+
+type SOP {
+  id: ID! @id
+  procedure: Procedure @relationship(type: "HAS_SOP", direction: IN)
+  equipment: Equipment @relationship(type: "HAS_SOP", direction: IN)
+}
+
+type OperatingRoom {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_OPERATING_ROOM", direction: IN)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "STAFF_OF_OPERATING ROOM", direction: IN)
+}
+
+type Ward {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_WARD", direction: IN)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "STAFF_OF_WARD", direction: IN)
+}
+
+type ICU {
+  id: ID! @id
+  medicalFacility: MedicalFacility @relationship(type: "HAS_ICU", direction: IN)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "STAFF_OF_ICU", direction: IN)
+}
+
+type DeliveryRoom {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_DELIVERY_ROOM", direction: IN)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "STAFF_OF_DELIVERY_ROOM", direction: IN)
+}
+
+type InventoryRoom {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_INVENTORY_ROOM", direction: IN)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "STAFF_OF_INVENTORY_ROOM", direction: IN)
+}
+
+type Laboratory {
+  id: ID! @id
+  medicalFacility: MedicalFacility
+    @relationship(type: "HAS_LABORATORY", direction: IN)
+  healthWorkers: [HealthWorker!]!
+    @relationship(type: "STAFF_OF_LABORATORY", direction: IN)
+}
