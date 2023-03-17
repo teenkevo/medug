@@ -7,14 +7,12 @@ const files = fs
   )
   .toString("utf-8");
 
-
 const getPaymentMethods = fs
   .readFileSync(
     process.env.GRAPHQL_SCHEMA ||
       path.join(__dirname, "rest-getPaymentMethods.graphql")
   )
   .toString("utf-8");
-
 
 const restUsers = fs
   .readFileSync(
@@ -34,12 +32,12 @@ const stripe = fs
   )
   .toString("utf-8");
 
-const array = [
-  files,
-  getPaymentMethods,
-  restUsers,
-  roles,
-  stripe,
-];
+const core = fs
+  .readFileSync(
+    process.env.GRAPHQL_SCHEMA || path.join(__dirname, "core.graphql")
+  )
+  .toString("utf-8");
+
+const array = [files, getPaymentMethods, restUsers, roles, stripe, core];
 
 module.exports = array.join(" ");
