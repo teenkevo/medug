@@ -1,0 +1,20 @@
+[build]
+  command = "CI=false && npm i && cd server && npm i && cd ../client && npm i && cd .. && npm run build"
+  publish = "client/build"
+  functions = "server/build/functions"
+
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
+ 
+[[redirects]]
+  from = "/graphql"
+  to = "/.netlify/functions/graphql"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+
+
