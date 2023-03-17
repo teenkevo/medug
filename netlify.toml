@@ -1,5 +1,5 @@
 [build]
-  command = "CI=false && npm i && cd server && npm i && cd ../client && npm i && cd .. && npm run build"
+  command = "CI=false && cd server && npm i && cd ../client && npm i && cd .. && npm run build"
   publish = "client/build"
   functions = "server/build/functions"
 
