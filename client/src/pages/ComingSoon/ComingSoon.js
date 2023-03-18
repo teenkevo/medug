@@ -99,7 +99,7 @@ function ComingSoon() {
           <CustomizedStepper />
         </div>
         <BiMailSend
-          style={{ marginTop: "50px", color: "grey" }}
+          style={{ marginTop: "50px", color: "white" }}
           fontSize={30}
         />
         <div>
@@ -109,6 +109,7 @@ function ComingSoon() {
               color: "grey",
               fontSize: "12px",
               marginRight: "20px",
+              fontWeight: "bold",
             }}
           >
             Sonia Salim
@@ -118,6 +119,7 @@ function ComingSoon() {
             style={{
               color: "grey",
               fontSize: "12px",
+              fontWeight: "bold",
             }}
           >
             Kevin Mugumya

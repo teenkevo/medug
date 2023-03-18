@@ -1,7 +1,7 @@
 .background {
-  background: linear-gradient(-45deg, #dad7d7, white);
+  background: linear-gradient(-45deg, #dad7d7, rgb(230, 183, 183), white);
   background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+  animation: gradient 10s ease infinite;
   height: 100vh;
 }
 
