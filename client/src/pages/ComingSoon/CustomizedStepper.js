@@ -83,7 +83,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     height: 3,
     border: 0,
     backgroundColor:
-      theme.palette.mode === "dark" ? theme.palette.grey[800] : "white",
+      theme.palette.mode === "dark" ? theme.palette.grey[800] : "grey",
     borderRadius: 1,
   },
 }));
@@ -147,11 +147,7 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = [
-  "Research",
-  "Development and A/B Tests",
-  "Beta Launch (3Q-2024)",
-];
+const steps = ["Research", "Development", "Launch (3Q24)"];
 
 export default function CustomizedStepper() {
   return (
@@ -163,12 +159,7 @@ export default function CustomizedStepper() {
       >
         {steps.map((label) => (
           <Step key={label}>
-            <StepLabel
-              style={{ color: "white" }}
-              StepIconComponent={ColorlibStepIcon}
-            >
-              {label}
-            </StepLabel>
+            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
